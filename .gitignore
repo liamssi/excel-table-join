@@ -1,5 +1,5 @@
 # Build output
-dist/
+# dist/
 
 # Node modules folder
 node_modules/
