@@ -5,6 +5,7 @@ Office.onReady(() => {
   const ROW_GAP = 3;
   const DEBOUNCE_DELAY = 300;
 
+
   function App() {
     const self = this;
 
@@ -43,7 +44,7 @@ Office.onReady(() => {
     // Logging utility
     self.log = (level, message, ...args) => {
       const timestamp = new Date().toISOString();
-      // console[level](`[${timestamp}] ${message}`, ...args);
+       console[level](`[${timestamp}] ${message}`, ...args);
     };
 
     // Debounce utility
@@ -639,8 +640,9 @@ Office.onReady(() => {
             for (let j = 0; j < tables.items.length; j++) {
               const table = tables.items[j];
               table.columns.load("items/name");
-              await context.sync();
+              
             }
+            await context.sync();
           }
           return sheets;
         });
@@ -688,7 +690,12 @@ Office.onReady(() => {
         self.filters = [];
         self.extensionTables = [];
 
+
+        console.log("befor get sheet name");
+        
         const workbookSheets = await self.getWorkbookSheets();
+
+        console.log("after get sheet name");
         self.allSheets = workbookSheets.items;
         self.sheets = workbookSheets.items.filter((sheet) => sheet.tables.items.length > 0);
 
@@ -710,6 +717,8 @@ Office.onReady(() => {
         self.handleNominativeSheetChange();
         self.handleEffectiveSheetChange();
       } catch (error) {
+        console.log();
+        
         self.log("error", "Erreur d'initialisation:", error);
         self.showError(`Échec de l'initialisation : ${error.message}`);
       }
@@ -1625,18 +1634,32 @@ Office.onReady(() => {
       }
     };
 
+    console.log("before init");
+    
     self
       .init()
-      .then(() => self.render())
+      .then(() => {
+        console.log("befor");
+        
+        self.render();
+        console.log("rendered");
+        
+
+
+
+      })
       .catch((error) => {
+        console.log("init error +++");
+        
         self.log("error", "Échec de l'initialisation:", error);
         self.showError(`Échec de l'initialisation : ${error.message}`);
       });
   }
 
 
-  console.log("hilaaaaw");
+  // console.log("hilaaaaw");
+
   
-  const app = new App();
+ const app = new App();
   window.app = app;
 });
