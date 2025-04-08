@@ -1634,6 +1634,9 @@ Office.onReady(() => {
       });
   }
 
+
+  console.log("hilaaaaw");
+  
   const app = new App();
   window.app = app;
 });
