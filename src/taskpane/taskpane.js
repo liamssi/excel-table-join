@@ -44,7 +44,7 @@ Office.onReady(() => {
     // Logging utility
     self.log = (level, message, ...args) => {
       const timestamp = new Date().toISOString();
-       console[level](`[${timestamp}] ${message}`, ...args);
+      //  console[level](`[${timestamp}] ${message}`, ...args);
     };
 
     // Debounce utility
@@ -623,6 +623,7 @@ Office.onReady(() => {
       }
     };
 
+   
     self.getWorkbookSheets = async () => {
       if (self.sheetCache) return self.sheetCache;
       try {
@@ -630,20 +631,30 @@ Office.onReady(() => {
           const sheets = context.workbook.worksheets;
           sheets.load("items/name");
           await context.sync();
-
-          for (let i = 0; i < sheets.items.length; i++) {
-            const sheet = sheets.items[i];
-            const tables = sheet.tables;
-            tables.load("items/name");
-            await context.sync();
-
-            for (let j = 0; j < tables.items.length; j++) {
-              const table = tables.items[j];
-              table.columns.load("items/name");
-              
-            }
-            await context.sync();
-          }
+          
+    // 2. Load all tables from all sheets at once
+    const allSheetTables = [];
+    for (let i = 0; i < sheets.items.length; i++) {
+      const sheet = sheets.items[i];
+      const tables = sheet.tables;
+      tables.load("items/name");
+      allSheetTables.push(tables);
+    }
+    
+    // One sync to get all tables
+    await context.sync();
+    
+    // 3. Load all columns from all tables at once
+    for (let i = 0; i < allSheetTables.length; i++) {
+      const tables = allSheetTables[i];
+      for (let j = 0; j < tables.items.length; j++) {
+        const table = tables.items[j];
+        table.columns.load("items/name");
+      }
+    }
+    
+    // One final sync to get all columns
+    await context.sync();
           return sheets;
         });
         self.sheetCache = sheets;
@@ -654,6 +665,7 @@ Office.onReady(() => {
         return { items: [] };
       }
     };
+
 
     self.invalidateCache = () => {
       self.sheetCache = null;
