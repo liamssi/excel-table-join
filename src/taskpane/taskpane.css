@@ -1,0 +1,63 @@
+.accordion-content {
+    display: none;
+  }
+  .accordion-content.is-active {
+    display: block;
+  }
+  .field.is-grouped {
+    margin: 0.25rem 0;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+  }
+  
+  .move-up, .move-down {
+    padding: 0 0.5em;
+    margin-left: 0.5em;
+  }
+  .column-order-item {
+    padding: 8px;
+    margin: 4px 0;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: move;
+    display: flex;
+    align-items: center;
+  }
+  
+  .drag-handle {
+    margin-right: 8px;
+    opacity: 0.5;
+    cursor: grab;
+  }
+  
+  .column-order-item.dragging {
+    opacity: 0.5;
+    background: #e9ecef;
+    border: 1px dashed #adb5bd;
+  }
+  [data-tooltip] {
+        position: relative;
+      }
+      [data-tooltip]:hover:after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        z-index: 10;
+        pointer-events: none;
+      }
+      /* Adjust tooltip position for buttons and inputs */
+      [data-tooltip].button:hover:after,
+      [data-tooltip].select:hover:after {
+        bottom: calc(100% + 5px);
+      }
